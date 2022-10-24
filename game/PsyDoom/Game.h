@@ -60,6 +60,12 @@ struct GameSettings {
     uint8_t     bEnableMapPatches_GamePlay;     // Enable patches for original game maps that affect gameplay?
     int32_t     lostSoulSpawnLimit;             // How many lost souls to limit a level to when Pain Elementals try to spawn one. -1 means no limit.
     int32_t     viewBobbingStrengthFixed;       // 16.16 multiplier for view bobbing strength
+    int32_t     bNoFriendlyFire;                // If true then players are not able to damage each other in coop.
+    int32_t     fragLimit;                      // If playing deathmatch, level will exit when this number of frags is reached. <0 = infinite.
+    int32_t     bExitDisabled;                  // If true while playing deathmatch, exit will display message and do nothing. 
+    int32_t     preserveAmmoFactor;             // How much ammo a player keeps after dying in co-op. 0 = none | 1 = all | 2 = half
+    int32_t     bPreserveKeys;                  // If true while playing co-op a player will spawn with previously collected keys.
+    int32_t     bMPThings;                      // Enable multiplayer-only things in co-op.
 
     // Byte swapping for Endian correction
     void byteSwap() noexcept;

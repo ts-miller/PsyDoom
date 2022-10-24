@@ -1,41 +1,17 @@
 name: Sync with Upstream Repository and Compile Nightly Builds for Windows and Linux
 
 on:
-  schedule:
-    - cron: '0 10/12 * * *'
+  pull_request:
   workflow_dispatch:
 
 jobs:
-  merge:
-    runs-on: ubuntu-latest
-    outputs:
-      has-new-commits: ${{ steps.check-new-commits.outputs.has-new-commits }}
-    steps:
-    - name: Sync and merge upstream repository with your current repository
-      uses: dabreadman/sync-upstream-repo@v1.3.0
-      with:
-        upstream_repo: "https://github.com/ts-miller/PsyDoom.git"
-        upstream_branch: multiplayer-updates
-        downstream_branch: develop
-        token: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Check for new commits
-      id: check-new-commits
-      uses: adriangl/check-new-commits-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        seconds: 10
-        branch: 'nightlies'
-
   build_win:
     runs-on: windows-latest
-    if: ${{ needs.merge.outputs.has-new-commits == 'true' }}
-    needs: merge
     steps:
     - name: Prepare Checkout
       uses: actions/checkout@v3
       with:
-        ref: 'mp-nightlies'
+        ref: 'multiplayer-updates'
     - name: Compile Latest Nightly
       run: |
         cmake .
@@ -49,13 +25,11 @@ jobs:
 
   build_linux:
     runs-on: ubuntu-latest
-    if: ${{ needs.merge.outputs.has-new-commits == 'true' }}
-    needs: merge
     steps:
     - name: Prepare Checkout
       uses: actions/checkout@v3
       with:
-        ref: 'mp-nightlies'
+        ref: 'multiplayer-updates'
     - name: Compile Latest Nightly
       run: |
         sudo apt-get install gcc g++ cmake libgl-dev libvulkan-dev libpulse-dev libx11-dev libxft-dev libxcursor-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libfreetype-dev libfreetype6-dev libfontconfig1-dev

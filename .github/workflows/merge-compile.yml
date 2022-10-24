@@ -16,7 +16,7 @@ jobs:
       with:
         upstream_repo: "https://github.com/ts-miller/PsyDoom.git"
         upstream_branch: multiplayer-updates
-        downstream_branch: mp-nightlies
+        downstream_branch: develop
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Check for new commits

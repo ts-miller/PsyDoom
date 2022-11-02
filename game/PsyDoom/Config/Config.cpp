@@ -122,12 +122,13 @@ CheatKeySequence gCheatKeys_NoTarget;
 //------------------------------------------------------------------------------------------------------------------------------------------
 // Multiplayer settings
 //------------------------------------------------------------------------------------------------------------------------------------------
-bool        gbNoFriendlyFire;
-bool        gbExitDisabled;
-int32_t     gFragLimit;
-int32_t     gPreserveAmmoFactor;
-bool        gbPreserveKeys;
-bool        gbMPThings;
+bool        gbCoopNoFriendlyFire;
+bool        gbDmExitDisabled;
+int32_t     gDmFragLimit;
+int32_t     gCoopPreserveAmmoFactor;
+bool        gbCoopPreserveKeys;
+bool        gbCoopForceSpawnMpThings;
+bool        gbDmActivateSpecialSectors;
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 // Config dynamic defaults: these can change depending on the host environment

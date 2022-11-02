@@ -22,37 +22,37 @@ BEGIN_NAMESPACE(Launcher)
 //------------------------------------------------------------------------------------------------------------------------------------------
 static void makeCoopSection(const int x, const int y) noexcept {
     // Container frame
-    new Fl_Box(FL_NO_BOX, x, y, 336, 30, "Cooperative");
-    new Fl_Box(FL_THIN_DOWN_BOX, x, y + 30, 336, 160, "");
+    new Fl_Box(FL_NO_BOX, x, y, 376, 30, "Cooperative");
+    new Fl_Box(FL_THIN_DOWN_BOX, x, y + 30, 376, 160, "");
     
-        // Friendly fire toggle
+    // Friendly fire toggle
     {
         const auto pCheck = makeFl_Check_Button(x + 20, y + 40, 150, 30, "  No Friendly Fire");
-        bindConfigField<Config::gbNoFriendlyFire, Config::gbNeedSave_Multiplayer>(*pCheck);
-        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.noFriendlyFire.comment);
+        bindConfigField<Config::gbCoopNoFriendlyFire, Config::gbNeedSave_Multiplayer>(*pCheck);
+        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.coopNoFriendlyFire.comment);
     }
 
     // Enable multiplayer-only things
     {
         const auto pCheck = makeFl_Check_Button(x + 20, y + 70, 150, 30, "  Spawn Multiplayer-Only Things");
-        bindConfigField<Config::gbMPThings, Config::gbNeedSave_Multiplayer>(*pCheck);
-        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.mpThings.comment);
+        bindConfigField<Config::gbCoopForceSpawnMpThings, Config::gbNeedSave_Multiplayer>(*pCheck);
+        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.coopForceSpawnMpThings.comment);
     }
 
-        // Preserve keys on respawn
+    // Preserve keys on respawn
     {
         const auto pCheck = makeFl_Check_Button(x + 20, y + 100, 150, 30, "  Preserve Keys on Respawn");
-        bindConfigField<Config::gbPreserveKeys, Config::gbNeedSave_Multiplayer>(*pCheck);
-        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.preserveKeys.comment);
+        bindConfigField<Config::gbCoopPreserveKeys, Config::gbNeedSave_Multiplayer>(*pCheck);
+        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.coopPreserveKeys.comment);
     }
 
-        // Preserve ammo on respawn
+    // Preserve ammo on respawn
     {
         const auto pLabel = new Fl_Box(FL_NO_BOX, x + 20, y + 140, 120, 26, "Preserve Ammo on Respawn");
         pLabel->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-        pLabel->tooltip(ConfigSerialization::gConfig_Multiplayer.preserveAmmoFactor.comment);
+        pLabel->tooltip(ConfigSerialization::gConfig_Multiplayer.coopPreserveAmmoFactor.comment);
 
-        const auto pChoice = new Fl_Choice(x + 210, y + 140, 100, 26);
+        const auto pChoice = new Fl_Choice(x + 250, y + 140, 100, 26);
         pChoice->add("None");
         pChoice->add("All");
         pChoice->add("Half");
@@ -62,18 +62,18 @@ static void makeCoopSection(const int x, const int y) noexcept {
                 Fl_Choice* const pChoice = static_cast<Fl_Choice*>(pWidget);
 
                 switch (pChoice->value()) {
-                    case 0: Config::gPreserveAmmoFactor = 0; break;
-                    case 1: Config::gPreserveAmmoFactor = 1; break;
-                    case 2: Config::gPreserveAmmoFactor = 2; break;
+                    case 0: Config::gCoopPreserveAmmoFactor = 0; break;
+                    case 1: Config::gCoopPreserveAmmoFactor = 1; break;
+                    case 2: Config::gCoopPreserveAmmoFactor = 2; break;
                 }
 
                 Config::gbNeedSave_Multiplayer = true;
             }
         );
 
-        if (Config::gPreserveAmmoFactor == 2) {
+        if (Config::gCoopPreserveAmmoFactor == 2) {
             pChoice->value(2);
-        } else if (Config::gPreserveAmmoFactor == 1) {
+        } else if (Config::gCoopPreserveAmmoFactor == 1) {
             pChoice->value(1);
         } else {
             pChoice->value(0);
@@ -86,28 +86,35 @@ static void makeCoopSection(const int x, const int y) noexcept {
 //------------------------------------------------------------------------------------------------------------------------------------------
 static void makeDeathmatchSection(const int x, const int y) noexcept {
     // Container frame
-    new Fl_Box(FL_NO_BOX, x, y, 336, 30, "Deathmatch");
-    new Fl_Box(FL_THIN_DOWN_BOX, x, y + 30, 336, 100, "");
+    new Fl_Box(FL_NO_BOX, x, y, 376, 30, "Deathmatch");
+    new Fl_Box(FL_THIN_DOWN_BOX, x, y + 30, 376, 130, "");
 
-        // Frag limit
+    // Frag limit
     {
         const auto pLabel = new Fl_Box(FL_NO_BOX, x + 20, y + 50, 140, 26, "Frag Limit");
         pLabel->align(FL_ALIGN_LEFT | FL_ALIGN_INSIDE);
-        pLabel->tooltip(ConfigSerialization::gConfig_Multiplayer.fragLimit.comment);
+        pLabel->tooltip(ConfigSerialization::gConfig_Multiplayer.dmFragLimit.comment);
 
-        const auto pInput = new Fl_Int_Input(x + 200, y + 50, 110, 26);
-        bindConfigField<Config::gFragLimit, Config::gbNeedSave_Multiplayer>(*pInput);
+        const auto pInput = new Fl_Int_Input(x + 240, y + 50, 110, 26);
+        bindConfigField<Config::gDmFragLimit, Config::gbNeedSave_Multiplayer>(*pInput);
         pInput->tooltip(pLabel->tooltip());
     }
 
-        // Disable Exit Switch
+    // Disable Exit Switch
     {
         const auto pCheck = makeFl_Check_Button(x + 20, y + 80, 150, 30, "  Disable Exits");
-        bindConfigField<Config::gbExitDisabled, Config::gbNeedSave_Multiplayer>(*pCheck);
-        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.exitDisabled.comment);
+        bindConfigField<Config::gbDmExitDisabled, Config::gbNeedSave_Multiplayer>(*pCheck);
+        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.dmExitDisabled.comment);
     }
 
-    new Fl_Box(FL_NO_BOX, x, y + 160, 336, 30, "Note: These settings are ignored for client");
+    // Automatically activate all special sectors upon entering a map
+    {
+        const auto pCheck = makeFl_Check_Button(x + 20, y + 110, 150, 30, "  Auto-Activate Special Sectors");
+        bindConfigField<Config::gbDmActivateSpecialSectors, Config::gbNeedSave_Multiplayer>(*pCheck);
+        pCheck->tooltip(ConfigSerialization::gConfig_Multiplayer.dmActivateSpecialSectors.comment);
+    }
+
+    new Fl_Box(FL_NO_BOX, x, y + 190, 336, 30, "Note: These settings are ignored for client");
 }
 
 //------------------------------------------------------------------------------------------------------------------------------------------
@@ -119,8 +126,8 @@ void populateMultiplayerTab(Context& ctx) noexcept {
     ASSERT(Fl_Group::current() == tab.pTab);
 
     const RectExtents tabRect = getRectExtents(*tab.pTab);
-    makeCoopSection((tabRect.lx + tabRect.rx) / 2 - 168, tabRect.ty + 20);
-    makeDeathmatchSection((tabRect.lx + tabRect.rx) / 2 - 168, tabRect.ty + 220);
+    makeCoopSection((tabRect.lx + tabRect.rx) / 2 - 188, tabRect.ty + 20);
+    makeDeathmatchSection((tabRect.lx + tabRect.rx) / 2 - 188, tabRect.ty + 220);
 }
 
 END_NAMESPACE(Launcher)
